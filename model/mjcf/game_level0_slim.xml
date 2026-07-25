@@ -9,11 +9,13 @@
        hand, so every game-side change belongs here. Two things this scene adds
        that the bare scene.xml does not:
 
-       1. A mount. ALLEX has a FIXED base -- Base_Link is welded to the world at
-          z=0 and scene.xml puts the floor 0.685 m below it, representing the
-          real fixed-mount height. Nothing occupies that 0.685 m, so in scene.xml
-          the robot visibly floats (lowest vertex is a fingertip at z=-0.174,
-          leaving a 0.51 m gap). The pedestal below fills it.
+       1. A mount, and the height convention. World z is HEIGHT ABOVE THE FLOOR
+          here: floor 0, robot base 0.600, bench top surface 0.850. ALLEX.xml
+          welds Base_Link to the world at z=0 and is generated, so the robot is
+          lifted to 0.6 in code instead -- see BASE_HEIGHT in web/src/main.js.
+          MJCF has no way to offset or override an <include>, which is why this
+          cannot live in the XML. The mount fills floor to base; without it the
+          robot visibly floats.
 
        2. contype/conaffinity 7/7 on every prop. `L_Thumb_Proximal_Collision1`
           carries contype="2" conaffinity="4"; a prop with MuJoCo's default 1/1
@@ -26,7 +28,7 @@
        this is a requested physical parameter, so the scene says it. -->
   <option gravity="0 0 -9.81"/>
 
-  <statistic center="0.15 0 0.35" extent="1.5"/>
+  <statistic center="0.15 0 0.95" extent="1.5"/>
 
   <visual>
     <headlight diffuse="0.55 0.55 0.55" ambient="0.35 0.35 0.35" specular="0.1 0.1 0.1"/>
@@ -71,12 +73,12 @@
   </default>
 
   <worldbody>
-    <light pos="0.6 0.4 2.2" dir="-0.2 -0.15 -1" directional="true"
+    <light pos="0.6 0.4 2.8" dir="-0.2 -0.15 -1" directional="true"
            diffuse="0.5 0.5 0.5" specular="0.15 0.15 0.15" castshadow="true"/>
-    <light pos="-0.8 -0.8 1.6" dir="0.3 0.3 -1" directional="true"
+    <light pos="-0.8 -0.8 2.2" dir="0.3 0.3 -1" directional="true"
            diffuse="0.18 0.18 0.22" castshadow="false"/>
 
-    <geom name="floor" pos="0 0 -0.685" size="0 0 0.05" type="plane"
+    <geom name="floor" pos="0 0 0" size="0 0 0.05" type="plane"
           material="floor_mat" contype="7" conaffinity="7"/>
 
     <!-- Mount: fills the 0.685 m between the floor and the welded Base_Link.
@@ -86,16 +88,16 @@
          between mount_column and the little fingers -- present since this scene
          was written, just never looked at. The robot's own base is only
          +/-0.075 wide, so 0.11 still clears it comfortably. -->
-    <body name="mount" pos="0 0 -0.3425">
-      <geom class="static" name="mount_column" size="0.11 0.11 0.3425"
+    <body name="mount" pos="0 0 0.3">
+      <geom class="static" name="mount_column" size="0.11 0.11 0.3"
             material="mount_mat"/>
-      <geom class="static" name="mount_foot" pos="0 0 -0.3325"
+      <geom class="static" name="mount_foot" pos="0 0 -0.29"
             size="0.26 0.26 0.01" material="mount_mat"/>
     </body>
 
     <!-- Work surface in front of the robot (+x is forward; the head cameras
          sit at +x offsets). Top face at z = 0.15. -->
-    <body name="bench" pos="0.52 0 0">
+    <body name="bench" pos="0.52 0 0.7">
       <geom class="static" name="bench_top" pos="0 0 0.135"
             size="0.24 0.45 0.015" material="bench_mat"/>
       <geom class="static" name="bench_leg_l" pos="0 0.38 -0.28"
@@ -148,13 +150,13 @@
          where the default left hand was already 21.6 mm short and visibly straining
          across the body; at these positions both hands reach both objects to within
          0.1 mm, so either arm can run the whole pick-and-place. -->
-    <body name="prop_cylinder" pos="0.53 -0.17 0.2130">
+    <body name="prop_cylinder" pos="0.53 -0.17 0.9130">
       <freejoint name="prop_cylinder_free"/>
       <geom class="prop" name="prop_cylinder_g" type="cylinder"
             size="0.024 0.0625" mass="0.10" material="prop_blue"/>
     </body>
 
-    <body name="prop_bin" pos="0.46 -0.01 0.1505">
+    <body name="prop_bin" pos="0.46 -0.01 0.8505">
       <freejoint name="prop_bin_free"/>
       <!-- Origin is the underside of the floor, so pos z = bench top exactly.
            Corner overlap between the walls is harmless: same body, so MuJoCo
@@ -178,11 +180,11 @@
 
     <!-- Spectator cameras. mode="targetbody" aims them automatically, which is
          far less error-prone than hand-computing xyaxes. -->
-    <camera name="game_front" pos="1.9 0 0.75"
+    <camera name="game_front" pos="1.9 0 1.35"
             mode="targetbody" target="Chest_Origin_Link"/>
-    <camera name="game_over_shoulder" pos="-0.75 0.85 1.35"
+    <camera name="game_over_shoulder" pos="-0.75 0.85 1.95"
             mode="targetbody" target="Chest_Origin_Link"/>
-    <camera name="game_bench" pos="1.15 0.30 0.68"
+    <camera name="game_bench" pos="1.15 0.30 1.28"
             mode="targetbody" target="bench"/>
   </worldbody>
 
