@@ -71,9 +71,33 @@
       border-radius: 10px; padding: 16px 18px;
       width: min(560px, 100%); max-height: 88vh; overflow: auto;
     }
-    #card h1 {
-      margin: 0 0 12px; font-size: 13px; letter-spacing: .04em; color: #9fb4d0;
+    #cardhead {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
     }
+    #card h1 {
+      margin: 0; flex: 1; font-size: 13px; letter-spacing: .04em; color: #9fb4d0;
+    }
+    #close {
+      flex: none; width: 34px; height: 34px; cursor: pointer;
+      background: #1b2027; color: #c3ccd8;
+      border: 1px solid #333c48; border-radius: 6px;
+      font: inherit; font-size: 13px; line-height: 1;
+    }
+    #close:hover { background: #222933; }
+    @media (pointer: coarse) { #close { width: 44px; height: 44px; font-size: 15px; } }
+
+    /* Install button. Chrome/Android fires beforeinstallprompt and this is the only
+       way to trigger the install from inside the page; it stays hidden when the
+       event never arrives (already installed, or a browser without support). */
+    #installrow { margin-bottom: 12px; }
+    #install {
+      width: 100%; padding: 10px; cursor: pointer;
+      background: #24405e; color: #dce8f5;
+      border: 1px solid #3a5f86; border-radius: 6px; font: inherit; font-size: 12px;
+    }
+    #install:hover { background: #2a4b6d; }
+    #install:disabled { opacity: .55; cursor: default; }
+    @media (pointer: coarse) { #install { min-height: 46px; font-size: 13px; } }
     #tabs { display: flex; gap: 8px; margin-bottom: 14px; }
     #tabs button {
       flex: 1; padding: 8px 10px; cursor: pointer;
@@ -183,7 +207,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-Dvx671mr.js"></script>
+  <script type="module" crossorigin src="./assets/index-DltmUxHX.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -200,13 +224,23 @@
 
   <div id="menu" hidden>
     <div id="card">
-      <h1>ALLEX Playground</h1>
+      <div id="cardhead">
+        <h1>ALLEX Playground</h1>
+        <!-- Without this the menu is a trap on touch: #menu (z 30) covers #menubtn
+             (z 15), so the button that opened it is unreachable and there is no Esc
+             key to fall back on. Verified with elementFromPoint -- it returned
+             DIV#menu at the button's own coordinates. -->
+        <button id="close" type="button" aria-label="메뉴 닫기">✕</button>
+      </div>
       <div id="tabs">
         <button id="tab-status" aria-selected="true">상태 확인</button>
         <button id="tab-keys" aria-selected="false">키 가이드</button>
       </div>
 
       <div id="pane-status" class="pane">
+        <div id="installrow" hidden>
+          <button id="install" type="button">홈 화면에 앱으로 설치</button>
+        </div>
         <div id="settings">
           <div class="griprow">
             <span>grip</span>
