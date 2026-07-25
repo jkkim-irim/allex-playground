@@ -313,8 +313,12 @@
     #lbhudtable td { font-size: 12px; color: #c3ccd8; padding: 1px 0; line-height: 1.5; }
     #lbhudtable td.rank { color: #6f7b89; padding-right: 7px; }
     #lbhudtable td.who {
-      max-width: 8.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      max-width: 10.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+    /* The device the run was played on, dimmer than the name so it reads as an
+       annotation rather than part of it. */
+    .plat { color: #6f7b89; font-size: .85em; margin-left: 4px; }
+    #lbhudtable tr.me td .plat { color: #8b95a3; }
     #lbhudtable td.pts {
       text-align: right; padding-left: 8px; color: #9fb4d0;
       font-variant-numeric: tabular-nums;
@@ -368,7 +372,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-ZBAiF3G9.js"></script>
+  <script type="module" crossorigin src="./assets/index-Cwm5qxhK.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
