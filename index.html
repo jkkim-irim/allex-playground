@@ -257,7 +257,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-B8Mn7ghm.js"></script>
+  <script type="module" crossorigin src="./assets/index-BXYay1mA.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -293,7 +293,8 @@
       <button class="padbtn" data-hold="yawNeg" aria-label="yaw −">−</button>
       <button class="padbtn" data-hold="yawPos" aria-label="yaw +">+</button>
     </div>
-    <button id="gripbtn" class="padbtn" data-hold="grip" aria-label="쥐기">GRIP</button>
+    <!-- data-tap, not data-hold: GRIP latches. One tap closes, the next opens. -->
+    <button id="gripbtn" class="padbtn" data-tap="grip" aria-label="쥐기 토글">GRIP</button>
     <!-- data-tap, not data-hold: these fire once per press however long it is held. -->
     <div class="padgrp padtaps">
       <button class="padbtn" data-tap="view" aria-label="시점 변경">시점</button>
