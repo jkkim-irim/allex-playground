@@ -24,9 +24,15 @@
 
   <include file="ALLEX_slim.xml"/>
 
-  <!-- Stated rather than inherited. MuJoCo's default happens to be the same, but
-       this is a requested physical parameter, so the scene says it. -->
-  <option gravity="0 0 -9.81"/>
+  <!-- Gravity stated rather than inherited, and the timestep set here so the scene
+       owns its own rate: 1/120 s, i.e. 120 Hz physics. The render loop runs at 60 Hz
+       and takes exactly 2 substeps per frame, which is what makes 120 Hz real time.
+
+       NOTE the stability rule this sits against: a solref time constant should stay at
+       or above 2*timestep, which is 0.0167 s here. The contact time constant is 0.01
+       and the joint welds are at 0.004, both BELOW that. Measured consequences are
+       recorded in web/src/main.js next to the constants. -->
+  <option gravity="0 0 -9.81" timestep="0.0083333"/>
 
   <statistic center="0.15 0 0.95" extent="1.5"/>
 
@@ -131,8 +137,13 @@
 
          The bin is a free body, not static, because it is one of the two objects
          here rather than scenery -- it can be shoved and repositioned. 0.5 kg
-         keeps it from sliding on an accidental brush. Interior is
-         130 x 130 x 55 mm, so the cylinder drops in either standing or lying.
+         keeps it from sliding on an accidental brush.
+
+         Interior is 143 x 143 x 110 mm: the footprint went up 1.1x and the walls
+         DOUBLED from 55 mm. 55 mm was low enough against a 125 mm cylinder that
+         players tipped it in over the side instead of lowering it, which is a
+         different task from the one being scored. 110 mm is most of the
+         cylinder's length, so it has to go in upright or not at all.
 
          Both sit in the band both arms can serve. Measured position error for a
          release point 0.28 m up, sweeping bin y at x=0.52:
@@ -162,19 +173,19 @@
            Corner overlap between the walls is harmless: same body, so MuJoCo
            excludes those pairs automatically. -->
       <geom class="prop" name="prop_bin_floor" type="box"
-            size="0.073 0.073 0.004" pos="0 0 0.004"
+            size="0.0795 0.0795 0.004" pos="0 0 0.004"
             mass="0.20" material="prop_yellow"/>
       <geom class="prop" name="prop_bin_wall_px" type="box"
-            size="0.004 0.073 0.0275" pos="0.069 0 0.0355"
+            size="0.004 0.0795 0.055" pos="0.0755 0 0.063"
             mass="0.075" material="prop_yellow"/>
       <geom class="prop" name="prop_bin_wall_nx" type="box"
-            size="0.004 0.073 0.0275" pos="-0.069 0 0.0355"
+            size="0.004 0.0795 0.055" pos="-0.0755 0 0.063"
             mass="0.075" material="prop_yellow"/>
       <geom class="prop" name="prop_bin_wall_py" type="box"
-            size="0.073 0.004 0.0275" pos="0 0.069 0.0355"
+            size="0.0795 0.004 0.055" pos="0 0.0755 0.063"
             mass="0.075" material="prop_yellow"/>
       <geom class="prop" name="prop_bin_wall_ny" type="box"
-            size="0.073 0.004 0.0275" pos="0 -0.069 0.0355"
+            size="0.0795 0.004 0.055" pos="0 -0.0755 0.063"
             mass="0.075" material="prop_yellow"/>
     </body>
 
