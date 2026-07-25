@@ -145,5 +145,21 @@
     <exclude body1="mount" body2="Waist_Yaw_Link"/>
     <exclude body1="mount" body2="Waist_Lower_Pitch_Link"/>
     <exclude body1="mount" body2="Waist_Upper_Pitch_Link"/>
+
+    <!-- The head nests between the shoulders. Sweeping Neck_Pitch x Neck_Yaw over
+         their full ranges, Neck_Yaw_Link overlaps R_Shoulder_Pitch_Link by up to
+         45.2 mm and L_Shoulder_Pitch_Link by up to 33.8 mm -- but only 1.9 mm at
+         the rest pose, which is how the generator's rest-pose overlap test missed
+         it while catching its parent Neck_Pitch_Link at 14 and 10 mm.
+
+         Untreated this is not a cosmetic defect. Neck_Pitch_Joint carries
+         actuatorfrcrange="-12 12", and the rest-pose overlap alone absorbs the
+         whole budget: commanding the head down drove the servo to 157 Nm, of which
+         only the clamped 12 Nm reached the joint, and the head settled at -6 deg
+         instead of the commanded +30. Disabling this one geom pair takes it to
+         +30.4 deg. Gravity on the head needs just 1.9 Nm, so the actuator is
+         amply sized -- the contact was the entire problem. -->
+    <exclude body1="Neck_Yaw_Link" body2="L_Shoulder_Pitch_Link"/>
+    <exclude body1="Neck_Yaw_Link" body2="R_Shoulder_Pitch_Link"/>
   </contact>
 </mujoco>
