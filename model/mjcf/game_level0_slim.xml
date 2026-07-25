@@ -57,7 +57,7 @@
       <!-- 7/7 so props collide with every hand geom, including the thumb
            proximal link's non-default contype=2/conaffinity=4 -->
       <geom contype="7" conaffinity="7" friction="0.7 0.02 0.001"
-            solimp="0.95 0.99 0.001" condim="4"/>
+            solimp="0.999 0.9999 0.0001" solref="0.004 1" condim="4"/>
     </default>
     <default class="static">
       <geom type="box" contype="7" conaffinity="7" friction="0.7 0.02 0.001"/>
@@ -148,13 +148,13 @@
          where the default left hand was already 21.6 mm short and visibly straining
          across the body; at these positions both hands reach both objects to within
          0.1 mm, so either arm can run the whole pick-and-place. -->
-    <body name="prop_cylinder" pos="0.46 0.09 0.2005">
+    <body name="prop_cylinder" pos="0.53 -0.07 0.2005">
       <freejoint name="prop_cylinder_free"/>
       <geom class="prop" name="prop_cylinder_g" type="cylinder"
             size="0.024 0.05" mass="0.10" material="prop_blue"/>
     </body>
 
-    <body name="prop_bin" pos="0.53 -0.07 0.1505">
+    <body name="prop_bin" pos="0.46 0.09 0.1505">
       <freejoint name="prop_bin_free"/>
       <!-- Origin is the underside of the floor, so pos z = bench top exactly.
            Corner overlap between the walls is harmless: same body, so MuJoCo
