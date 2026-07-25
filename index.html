@@ -149,6 +149,45 @@
       color: #c3ccd8; font-size: 11px;
     }
 
+    /* ===== on-screen control pad, bottom right ===== */
+    #pad {
+      position: fixed; z-index: 12;
+      right: calc(12px + env(safe-area-inset-right));
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+      /* The pad itself must not eat drags meant for the canvas; only its buttons do. */
+      pointer-events: none;
+    }
+    .padgrp {
+      display: flex; align-items: center; gap: 5px;
+      pointer-events: none;
+    }
+    .padlbl {
+      flex: 1; text-align: right; padding-right: 3px;
+      color: #8b95a3; font-size: 11px;
+    }
+    .padbtn {
+      pointer-events: auto;
+      width: 40px; height: 36px; flex: none; cursor: pointer;
+      background: rgba(27, 32, 39, .82); color: #c3ccd8;
+      border: 1px solid #333c48; border-radius: 7px;
+      font: inherit; font-size: 14px; line-height: 1;
+      backdrop-filter: blur(5px);
+      /* A held button must not also select text or fire the OS long-press menu. */
+      touch-action: none; user-select: none; -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    .padbtn:hover { background: rgba(34, 41, 51, .9); }
+    /* .on rather than :active, because a pointer captured by the button still counts
+       as held after the finger slides off it. */
+    .padbtn.on { background: #2a4b6d; border-color: #46566a; color: #eaf0f7; }
+    #gripbtn { width: auto; min-width: 91px; height: 42px; font-size: 12px; letter-spacing: .06em; }
+    @media (pointer: coarse) {
+      .padbtn { width: 52px; height: 46px; font-size: 16px; }
+      #gripbtn { min-width: 115px; height: 54px; }
+      .padlbl { font-size: 12px; }
+    }
+
     /* ===== small screens and touch devices ===== */
     /* Narrow viewport: the menu card was a fixed 560 px and the key guide a fixed
        211 x 327, which on a 375 px phone is most of the screen. */
@@ -183,10 +222,12 @@
       border-radius: 10px; color: #c3ccd8; font: inherit; font-size: 19px;
       backdrop-filter: blur(5px); cursor: pointer;
     }
+    /* Top, not bottom: the control pad now occupies the bottom-right corner and the
+       two would collide on a narrow screen. */
     #touchnote {
       display: none;
       position: fixed; z-index: 10; left: 50%; transform: translateX(-50%);
-      bottom: calc(14px + env(safe-area-inset-bottom));
+      top: calc(12px + env(safe-area-inset-top));
       max-width: min(92vw, 30em); text-align: center;
       background: rgba(12, 14, 18, .72); border: 1px solid #262c34;
       border-radius: 8px; padding: 8px 12px;
@@ -207,7 +248,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-CLT6Rq-v.js"></script>
+  <script type="module" crossorigin src="./assets/index-BQKReF84.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -217,9 +258,37 @@
   <div id="keyguide"><table id="keys"></table></div>
 
   <button id="menubtn" type="button" aria-label="메뉴 열기">☰</button>
+
+  <!-- Height, orientation and grip. Shown on every device: these are the axes you
+       hold and trim, and XY is pointed at instead (right-drag / one finger), so there
+       is nothing here that duplicates a drag. data-hold is the action id from
+       controls.js KEYS, so a button and its key drive exactly the same code. -->
+  <div id="pad">
+    <div class="padgrp">
+      <span class="padlbl">Z</span>
+      <button class="padbtn" data-hold="up" aria-label="위로">▲</button>
+      <button class="padbtn" data-hold="down" aria-label="아래로">▼</button>
+    </div>
+    <div class="padgrp">
+      <span class="padlbl">roll</span>
+      <button class="padbtn" data-hold="rollNeg" aria-label="roll −">−</button>
+      <button class="padbtn" data-hold="rollPos" aria-label="roll +">+</button>
+    </div>
+    <div class="padgrp">
+      <span class="padlbl">pitch</span>
+      <button class="padbtn" data-hold="pitchNeg" aria-label="pitch −">−</button>
+      <button class="padbtn" data-hold="pitchPos" aria-label="pitch +">+</button>
+    </div>
+    <div class="padgrp">
+      <span class="padlbl">yaw</span>
+      <button class="padbtn" data-hold="yawNeg" aria-label="yaw −">−</button>
+      <button class="padbtn" data-hold="yawPos" aria-label="yaw +">+</button>
+    </div>
+    <button id="gripbtn" class="padbtn" data-hold="grip" aria-label="쥐기">GRIP</button>
+  </div>
   <div id="touchnote">
-    카메라는 드래그·핀치로 조작할 수 있습니다.<br />
-    로봇 조작은 아직 키보드만 지원합니다 — 터치 조작은 준비 중입니다.
+    한 손가락으로 끌면 손바닥이 따라옵니다 · 두 손가락은 카메라<br />
+    높이·회전·쥐기는 오른쪽 아래 버튼
   </div>
 
   <div id="menu" hidden>
