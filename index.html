@@ -37,6 +37,19 @@
       border-radius: 4px; overflow: hidden;
     }
     #gripfill { height: 100%; width: 0%; background: #6ddf8f; transition: width .05s linear; }
+    .griprow input[type=range] {
+      flex: 1; height: 7px; -webkit-appearance: none; appearance: none;
+      background: #232932; border-radius: 4px; outline: none;
+    }
+    .griprow input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: #9fb4d0; cursor: pointer;
+    }
+    .griprow input[type=range]::-moz-range-thumb {
+      width: 12px; height: 12px; border: 0; border-radius: 50%;
+      background: #9fb4d0; cursor: pointer;
+    }
+    .griprow .v { min-width: 3.2em; }
     #help td { color: #8b95a3; font-size: 12px; }
     #help td:first-child { white-space: nowrap; padding-right: 10px; }
     #help .key {
@@ -49,7 +62,7 @@
       border-radius: 4px; padding: 0 5px; font-size: 11px; color: #c3ccd8;
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-CXlAlq8K.js"></script>
+  <script type="module" crossorigin src="./assets/index-DVl3W0vP.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -61,6 +74,19 @@
         <span>grip</span>
         <div class="meter"><div id="gripfill"></div></div>
         <span id="gripval" class="v">0.00</span>
+      </div>
+      <div class="griprow" style="margin-top:7px">
+        <span>fov</span>
+        <input id="fov" type="range" min="20" max="120" step="1" value="51" />
+        <span id="fovval" class="v">51°</span>
+      </div>
+      <!-- 30 deg is the requested default, but at eye height 0.95 m that ray
+           clears the bench entirely and lands on the floor at x ~ 1.5 m. The
+           bench needs about 60. Slider rather than a recompile. -->
+      <div class="griprow" style="margin-top:5px">
+        <span>tilt</span>
+        <input id="pitch" type="range" min="0" max="85" step="1" value="30" />
+        <span id="pitchval" class="v">30°</span>
       </div>
     </div>
     <hr />
