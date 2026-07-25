@@ -22,6 +22,10 @@
 
   <include file="ALLEX_slim.xml"/>
 
+  <!-- Stated rather than inherited. MuJoCo's default happens to be the same, but
+       this is a requested physical parameter, so the scene says it. -->
+  <option gravity="0 0 -9.81"/>
+
   <statistic center="0.15 0 0.35" extent="1.5"/>
 
   <visual>
@@ -52,11 +56,11 @@
     <default class="prop">
       <!-- 7/7 so props collide with every hand geom, including the thumb
            proximal link's non-default contype=2/conaffinity=4 -->
-      <geom contype="7" conaffinity="7" friction="1.0 0.02 0.001"
+      <geom contype="7" conaffinity="7" friction="0.7 0.02 0.001"
             solimp="0.95 0.99 0.001" condim="4"/>
     </default>
     <default class="static">
-      <geom type="box" contype="7" conaffinity="7" friction="0.8 0.02 0.001"/>
+      <geom type="box" contype="7" conaffinity="7" friction="0.7 0.02 0.001"/>
     </default>
     <!-- Shared tuning for every frozen joint. solref timeconst must stay
          >= 2*timestep (0.002) or the constraint rings; 0.004 is the tightest
@@ -147,7 +151,7 @@
     <body name="prop_cylinder" pos="0.46 0.09 0.2005">
       <freejoint name="prop_cylinder_free"/>
       <geom class="prop" name="prop_cylinder_g" type="cylinder"
-            size="0.024 0.05" mass="0.15" material="prop_blue"/>
+            size="0.024 0.05" mass="0.10" material="prop_blue"/>
     </body>
 
     <body name="prop_bin" pos="0.53 -0.07 0.1505">
