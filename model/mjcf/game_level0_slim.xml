@@ -94,33 +94,76 @@
             size="0.03 0.03 0.4" material="mount_mat"/>
     </body>
 
-    <!-- Graspable props, resting on the bench top (z = 0.15).
-         Sizes come from tools/find_grasp_pocket.py: a 50 mm cube held in only
-         6 of 560 probed hand placements, a 30 mm cube in 91. The first pass of
-         this scene used 50-66 mm props, which is why nothing could be picked up
-         no matter how accurate the IK got. Keep props near 30-36 mm. -->
-    <body name="prop_cube" pos="0.48 0.16 0.165">
-      <freejoint name="prop_cube_free"/>
-      <geom class="prop" name="prop_cube_g" type="box" size="0.015 0.015 0.015"
-            mass="0.08" material="prop_red"/>
+    <!-- Two props, resting on the bench top (z = 0.15): one cylinder to pick and
+         one open bin to put it in.
+
+         The cylinder's 48 mm diameter is sized from the hand's own finger cage,
+         measured on this model as the distance between distal-link origins while
+         driving the grip synergy (so the enclosed diameter is smaller than these
+         spans by roughly a finger thickness at each pad):
+
+           synergy   thumb-index   thumb-middle   thumb-ring
+             0.45       80.3 mm       100.2 mm      121.3 mm
+             0.60       62.3 mm        81.2 mm      101.6 mm
+             0.75       49.4 mm        65.8 mm       84.7 mm
+             0.90       40.6 mm        53.3 mm       70.5 mm
+             1.00       36.5 mm        46.8 mm       63.3 mm
+
+         48 mm sits inside the thumb-middle span at roughly synergy 0.75-0.8, so
+         the fingers wrap it rather than closing past it in the air (what the old
+         50-66 mm props did) or bottoming out early. It is deliberately larger
+         than the 36 mm can it replaces -- a wider cylinder gives the fingers more
+         surface to oppose, which is the "easy to grasp" part of the request.
+         100 mm tall keeps a 2:1 aspect, stable standing but tall enough to grab
+         well clear of the bench.
+
+         The bin is a free body, not static, because it is one of the two objects
+         here rather than scenery -- it can be shoved and repositioned. 0.5 kg
+         keeps it from sliding on an accidental brush. Interior is
+         130 x 130 x 55 mm, so the cylinder drops in either standing or lying.
+
+         Both sit in the band both arms can serve. Measured position error for a
+         release point 0.28 m up, sweeping bin y at x=0.52:
+
+              y     left hand   right hand
+            +0.30      0.0 mm     117.7 mm
+            +0.20      0.0 mm      39.4 mm
+            +0.10      0.0 mm       0.1 mm
+             0.00      0.1 mm       0.0 mm
+            -0.10      0.1 mm       0.0 mm
+            -0.18     27.8 mm       0.0 mm
+            -0.30    117.7 mm       0.0 mm
+
+         Only |y| <= 0.10 is shared. The first placement put the bin at y = -0.18,
+         where the default left hand was already 21.6 mm short and visibly straining
+         across the body; at these positions both hands reach both objects to within
+         0.1 mm, so either arm can run the whole pick-and-place. -->
+    <body name="prop_cylinder" pos="0.46 0.09 0.2005">
+      <freejoint name="prop_cylinder_free"/>
+      <geom class="prop" name="prop_cylinder_g" type="cylinder"
+            size="0.024 0.05" mass="0.15" material="prop_blue"/>
     </body>
 
-    <body name="prop_can" pos="0.50 -0.02 0.185">
-      <freejoint name="prop_can_free"/>
-      <geom class="prop" name="prop_can_g" type="cylinder" size="0.018 0.035"
-            mass="0.14" material="prop_blue"/>
-    </body>
-
-    <body name="prop_ball" pos="0.46 -0.20 0.168">
-      <freejoint name="prop_ball_free"/>
-      <geom class="prop" name="prop_ball_g" type="sphere" size="0.018"
-            mass="0.06" material="prop_green"/>
-    </body>
-
-    <body name="prop_bar" pos="0.56 0.32 0.163">
-      <freejoint name="prop_bar_free"/>
-      <geom class="prop" name="prop_bar_g" type="box" size="0.012 0.012 0.075"
-            mass="0.08" material="prop_yellow" euler="0 1.5708 0"/>
+    <body name="prop_bin" pos="0.53 -0.07 0.1505">
+      <freejoint name="prop_bin_free"/>
+      <!-- Origin is the underside of the floor, so pos z = bench top exactly.
+           Corner overlap between the walls is harmless: same body, so MuJoCo
+           excludes those pairs automatically. -->
+      <geom class="prop" name="prop_bin_floor" type="box"
+            size="0.073 0.073 0.004" pos="0 0 0.004"
+            mass="0.20" material="prop_yellow"/>
+      <geom class="prop" name="prop_bin_wall_px" type="box"
+            size="0.004 0.073 0.0275" pos="0.069 0 0.0355"
+            mass="0.075" material="prop_yellow"/>
+      <geom class="prop" name="prop_bin_wall_nx" type="box"
+            size="0.004 0.073 0.0275" pos="-0.069 0 0.0355"
+            mass="0.075" material="prop_yellow"/>
+      <geom class="prop" name="prop_bin_wall_py" type="box"
+            size="0.073 0.004 0.0275" pos="0 0.069 0.0355"
+            mass="0.075" material="prop_yellow"/>
+      <geom class="prop" name="prop_bin_wall_ny" type="box"
+            size="0.073 0.004 0.0275" pos="0 -0.069 0.0355"
+            mass="0.075" material="prop_yellow"/>
     </body>
 
     <!-- Spectator cameras. mode="targetbody" aims them automatically, which is
