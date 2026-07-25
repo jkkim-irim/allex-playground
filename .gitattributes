@@ -1,0 +1,6 @@
+* -text
+*.wasm binary
+*.bin binary
+*.stl binary
+*.jpg binary
+*.png binary
