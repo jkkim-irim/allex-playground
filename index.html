@@ -2,22 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- Without this a phone lays the page out at 980 CSS px and scales the result
+       down. Measured at a 375 px viewport with no viewport meta: the document
+       reported clientWidth 980 and scrolled horizontally, so the canvas was
+       letterboxed and every control ended up smaller than a fingertip.
+       viewport-fit=cover is what lets the env(safe-area-inset-*) rules below
+       actually apply on notched devices. -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#14171c" />
+  <meta name="description"
+        content="Drive a real bimanual robot's MJCF model in the browser." />
   <title>ALLEX Playground</title>
+
+  <!-- Installable as a PWA. The service worker already caches everything, so this
+       only adds the identity an install needs: name, icon, colours, display mode. -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <!-- iOS does not read the manifest for home-screen installs; it reads these. -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ALLEX" />
+  <link rel="apple-touch-icon" href="./icons/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
   <style>
     :root { color-scheme: dark; }
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0; background: #14171c; color: #e6e8eb; overflow: hidden;
       font: 13px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      /* Stop the pull-to-refresh / rubber-band gesture from fighting a drag that
+         was meant for the camera. */
+      overscroll-behavior: none;
+      -webkit-text-size-adjust: 100%;
     }
     /* <canvas> is a replaced element: `inset: 0` alone will NOT stretch it, so
        width:auto resolves to the intrinsic 300x150 and the render collapses into
        a corner. The explicit 100% is required. */
-    #view { position: fixed; inset: 0; display: block; width: 100%; height: 100%; }
+    /* touch-action: none so the canvas owns its gestures. Without it a drag scrolls
+       the page instead of orbiting, and a double-tap zooms the whole UI. */
+    #view {
+      position: fixed; inset: 0; display: block; width: 100%; height: 100%;
+      touch-action: none;
+    }
 
     /* ===== always-on key guide, top left ===== */
     #keyguide {
-      position: fixed; top: 12px; left: 12px; z-index: 10;
+      position: fixed; z-index: 10;
+      top: calc(12px + env(safe-area-inset-top));
+      left: calc(12px + env(safe-area-inset-left));
       background: rgba(12, 14, 18, .62); border: 1px solid #262c34;
       border-radius: 8px; padding: 9px 11px;
       backdrop-filter: blur(5px); pointer-events: none;
@@ -92,6 +125,56 @@
       color: #c3ccd8; font-size: 11px;
     }
 
+    /* ===== small screens and touch devices ===== */
+    /* Narrow viewport: the menu card was a fixed 560 px and the key guide a fixed
+       211 x 327, which on a 375 px phone is most of the screen. */
+    @media (max-width: 720px) {
+      #menu { padding: 3vh 8px 8px; }
+      #card { padding: 14px; max-height: 94vh; }
+      #keyguide { padding: 7px 9px; max-height: 40vh; overflow: auto; }
+      #keyguide td { font-size: 11px; }
+      #keyguide td:first-child { padding-right: 7px; }
+    }
+    /* Coarse pointer: fingers need targets around 44 px, and the default 12 px
+       slider thumbs are unusable. */
+    @media (pointer: coarse) {
+      #tabs button { min-height: 44px; }
+      .griprow input[type=range] { height: 24px; }
+      .griprow input[type=range]::-webkit-slider-thumb { width: 24px; height: 24px; }
+      .griprow input[type=range]::-moz-range-thumb { width: 24px; height: 24px; }
+    }
+
+    /* A touch-primary device has no keyboard, which makes the always-on key list
+       noise AND makes the Esc menu unreachable -- there is no Esc to press. Swap the
+       list for a button that opens the same menu, and say plainly that touch control
+       of the robot is not built yet, so a phone visitor is not left wondering why
+       the robot ignores them. Camera orbit does work: OrbitControls handles touch. */
+    #menubtn {
+      display: none;
+      position: fixed; z-index: 15;
+      top: calc(12px + env(safe-area-inset-top));
+      left: calc(12px + env(safe-area-inset-left));
+      width: 46px; height: 46px; align-items: center; justify-content: center;
+      background: rgba(12, 14, 18, .72); border: 1px solid #262c34;
+      border-radius: 10px; color: #c3ccd8; font: inherit; font-size: 19px;
+      backdrop-filter: blur(5px); cursor: pointer;
+    }
+    #touchnote {
+      display: none;
+      position: fixed; z-index: 10; left: 50%; transform: translateX(-50%);
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      max-width: min(92vw, 30em); text-align: center;
+      background: rgba(12, 14, 18, .72); border: 1px solid #262c34;
+      border-radius: 8px; padding: 8px 12px;
+      color: #8b95a3; font-size: 11.5px; line-height: 1.5;
+      backdrop-filter: blur(5px); pointer-events: none;
+    }
+    @media (hover: none) and (pointer: coarse) {
+      #keyguide { display: none; }
+      #menubtn { display: flex; }
+      #touchnote { display: block; }
+    }
+
     /* loading line, centre screen until the scene is up */
     #boot {
       position: fixed; inset: 0; z-index: 20; display: flex;
@@ -100,7 +183,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-DOUb2xlP.js"></script>
+  <script type="module" crossorigin src="./assets/index-Dvx671mr.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -108,6 +191,12 @@
   <div id="boot">loading…</div>
 
   <div id="keyguide"><table id="keys"></table></div>
+
+  <button id="menubtn" type="button" aria-label="메뉴 열기">☰</button>
+  <div id="touchnote">
+    카메라는 드래그·핀치로 조작할 수 있습니다.<br />
+    로봇 조작은 아직 키보드만 지원합니다 — 터치 조작은 준비 중입니다.
+  </div>
 
   <div id="menu" hidden>
     <div id="card">
