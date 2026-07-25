@@ -148,13 +148,13 @@
          where the default left hand was already 21.6 mm short and visibly straining
          across the body; at these positions both hands reach both objects to within
          0.1 mm, so either arm can run the whole pick-and-place. -->
-    <body name="prop_cylinder" pos="0.53 -0.07 0.2130">
+    <body name="prop_cylinder" pos="0.53 -0.17 0.2130">
       <freejoint name="prop_cylinder_free"/>
       <geom class="prop" name="prop_cylinder_g" type="cylinder"
             size="0.024 0.0625" mass="0.10" material="prop_blue"/>
     </body>
 
-    <body name="prop_bin" pos="0.46 0.09 0.1505">
+    <body name="prop_bin" pos="0.46 -0.01 0.1505">
       <freejoint name="prop_bin_free"/>
       <!-- Origin is the underside of the floor, so pos z = bench top exactly.
            Corner overlap between the walls is harmless: same body, so MuJoCo

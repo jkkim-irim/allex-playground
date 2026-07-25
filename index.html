@@ -231,23 +231,64 @@
       border-radius: 10px; color: #c3ccd8; font: inherit; font-size: 19px;
       backdrop-filter: blur(5px); cursor: pointer;
     }
-    /* Top, not bottom: the control pad now occupies the bottom-right corner and the
-       two would collide on a narrow screen. */
-    #touchnote {
-      display: none;
-      position: fixed; z-index: 10; left: 50%; transform: translateX(-50%);
-      top: calc(12px + env(safe-area-inset-top));
-      max-width: min(92vw, 30em); text-align: center;
-      background: rgba(12, 14, 18, .72); border: 1px solid #262c34;
-      border-radius: 8px; padding: 8px 12px;
-      color: #8b95a3; font-size: 11.5px; line-height: 1.5;
-      backdrop-filter: blur(5px); pointer-events: none;
-    }
     @media (hover: none) and (pointer: coarse) {
       #keyguide { display: none; }
       #menubtn { display: flex; }
-      #touchnote { display: block; }
     }
+
+    /* ===== scoreboard, top centre, both platforms ===== */
+    #scoreboard {
+      position: fixed; z-index: 14; left: 50%; transform: translateX(-50%);
+      top: calc(12px + env(safe-area-inset-top));
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(12, 14, 18, .72); border: 1px solid #262c34;
+      border-radius: 8px; padding: 7px 13px;
+      backdrop-filter: blur(5px); pointer-events: none;
+      font-size: 12.5px; white-space: nowrap;
+    }
+    #scoreboard .win { color: #6ddf8f; }
+    #scoreboard .lose { color: #ff7a6b; }
+    #scoreboard .live { color: #9fb4d0; font-variant-numeric: tabular-nums; }
+    #scoreboard .sep { color: #3a424e; }
+    @media (max-width: 480px) {
+      #scoreboard { font-size: 11px; gap: 8px; padding: 6px 10px; }
+    }
+
+    /* Outcome banner, under the scoreboard, only between attempts. */
+    #banner {
+      position: fixed; z-index: 14; left: 50%; transform: translateX(-50%);
+      top: calc(56px + env(safe-area-inset-top));
+      padding: 9px 16px; border-radius: 8px; font-size: 14px; letter-spacing: .02em;
+      backdrop-filter: blur(5px); pointer-events: none; display: none;
+    }
+    #banner.win {
+      display: block; color: #d6ffe4; background: rgba(31, 92, 55, .88);
+      border: 1px solid #4fd873;
+    }
+    #banner.lose {
+      display: block; color: #ffdcd7; background: rgba(104, 40, 34, .88);
+      border: 1px solid #e0483c;
+    }
+
+    /* ===== leaderboard pane ===== */
+    #lbtable { width: 100%; font-size: 12px; }
+    #lbtable th {
+      text-align: left; color: #8b95a3; font-weight: normal;
+      border-bottom: 1px solid #2b313a; padding: 0 6px 5px 0;
+    }
+    #lbtable td { padding: 3px 6px 3px 0; font-variant-numeric: tabular-nums; }
+    #lbtable td.num { text-align: right; }
+    #lbnote { margin-top: 12px; color: #f0c268; font-size: 11.5px; line-height: 1.6; }
+    #namerow { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+    #namerow input {
+      flex: 1; padding: 8px 10px; background: #1b2027; color: #e6e8eb;
+      border: 1px solid #333c48; border-radius: 6px; font: inherit; font-size: 12px;
+    }
+    #namerow button {
+      padding: 8px 12px; cursor: pointer; background: #24405e; color: #dce8f5;
+      border: 1px solid #3a5f86; border-radius: 6px; font: inherit; font-size: 12px;
+    }
+    @media (pointer: coarse) { #namerow input, #namerow button { min-height: 44px; } }
 
     /* loading line, centre screen until the scene is up */
     #boot {
@@ -257,12 +298,21 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-BXYay1mA.js"></script>
+  <script type="module" crossorigin src="./assets/index-CKPPjhol.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
 
   <div id="boot">loading…</div>
+
+  <div id="scoreboard">
+    <span class="win">성공 <b id="sbWin">0</b></span>
+    <span class="sep">|</span>
+    <span class="lose">실패 <b id="sbLose">0</b></span>
+    <span class="sep">|</span>
+    <span class="live" id="sbLive">—</span>
+  </div>
+  <div id="banner"></div>
 
   <div id="keyguide"><table id="keys"></table></div>
 
@@ -302,10 +352,6 @@
       <button class="padbtn" data-tap="reset" aria-label="전체 리셋">리셋</button>
     </div>
   </div>
-  <div id="touchnote">
-    한 손가락으로 끌면 손바닥이 따라옵니다 · 두 손가락은 카메라<br />
-    높이·회전·쥐기는 오른쪽 아래 버튼
-  </div>
 
   <div id="menu" hidden>
     <div id="card">
@@ -320,6 +366,7 @@
       <div id="tabs">
         <button id="tab-status" aria-selected="true">상태 확인</button>
         <button id="tab-keys" aria-selected="false">키 가이드</button>
+        <button id="tab-board" aria-selected="false">리더보드</button>
       </div>
 
       <div id="pane-status" class="pane">
@@ -355,6 +402,15 @@
 
       <div id="pane-keys" class="pane" hidden>
         <table id="keydetail"></table>
+      </div>
+
+      <div id="pane-board" class="pane" hidden>
+        <div id="namerow">
+          <input id="playerName" type="text" maxlength="24" placeholder="플레이어 이름" />
+          <button id="saveName" type="button">이름 사용</button>
+        </div>
+        <table id="lbtable"></table>
+        <div id="lbnote"></div>
       </div>
 
       <div id="hint">Esc 를 다시 누르면 장면으로 돌아갑니다.</div>
