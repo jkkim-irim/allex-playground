@@ -25,14 +25,19 @@
   <include file="ALLEX_slim.xml"/>
 
   <!-- Gravity stated rather than inherited, and the timestep set here so the scene
-       owns its own rate: 1/120 s, i.e. 120 Hz physics. The render loop runs at 60 Hz
-       and takes exactly 2 substeps per frame, which is what makes 120 Hz real time.
+       owns its own rate: 1/240 s, i.e. 240 Hz physics. The render loop runs at 60 Hz
+       and takes exactly 4 substeps per frame, which is what makes 240 Hz real time.
 
-       NOTE the stability rule this sits against: a solref time constant should stay at
-       or above 2*timestep, which is 0.0167 s here. The contact time constant is 0.01
-       and the joint welds are at 0.004, both BELOW that. Measured consequences are
-       recorded in web/src/main.js next to the constants. -->
-  <option gravity="0 0 -9.81" timestep="0.0083333"/>
+       MuJoCo has no internal substepping -- opt.timestep IS the integration step, and
+       calling mj_step four times advances four full steps. That is why 240 Hz needs
+       timestep 1/240 and not 1/120: engines like PhysX subdivide a frame dt internally,
+       MuJoCo does not.
+
+       240 Hz is also what makes the contact time constant legal. A solref time constant
+       should be at least 2*timestep; at 1/240 that is 0.00833, and the contact constant
+       is 0.01. At 1/120 the bar was 0.0167 and 0.01 fell short of it -- measured, that
+       cost 22.4 mm of penetration against 5.8 mm here. -->
+  <option gravity="0 0 -9.81" timestep="0.0041667"/>
 
   <statistic center="0.15 0 0.95" extent="1.5"/>
 
