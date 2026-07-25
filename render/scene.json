@@ -1,442 +1,380 @@
 {
  "generator": "allex_model/tools/export_render_assets.py",
- "reduction": 0.92,
- "minVerts": 250,
- "idxByteBase": 3572400,
+ "format": "draco",
+ "quantization": 14,
+ "reduction": 0.0,
  "meshes": [
   {
    "name": "Base_Black",
-   "posOffset": 0,
-   "posCount": 8184,
-   "idxOffset": 0,
-   "idxCount": 16338
+   "file": "meshes/Base_Black.drc",
+   "verts": 11761,
+   "faces": 23980
   },
   {
    "name": "Waist_Yaw_Black",
-   "posOffset": 8184,
-   "posCount": 14139,
-   "idxOffset": 16338,
-   "idxCount": 28758
+   "file": "meshes/Waist_Yaw_Black.drc",
+   "verts": 33364,
+   "faces": 68178
   },
   {
    "name": "Waist_Pitch_Back_Gray",
-   "posOffset": 22323,
-   "posCount": 49197,
-   "idxOffset": 45096,
-   "idxCount": 98406
+   "file": "meshes/Waist_Pitch_Back_Gray.drc",
+   "verts": 56920,
+   "faces": 113844
   },
   {
    "name": "Waist_Pitch_Front_Gray",
-   "posOffset": 71520,
-   "posCount": 29646,
-   "idxOffset": 143502,
-   "idxCount": 59292
+   "file": "meshes/Waist_Pitch_Front_Gray.drc",
+   "verts": 42700,
+   "faces": 85400
   },
   {
    "name": "Chest_Led",
-   "posOffset": 101166,
-   "posCount": 705,
-   "idxOffset": 202794,
-   "idxCount": 1398
+   "file": "meshes/Chest_Led.drc",
+   "verts": 235,
+   "faces": 466
   },
   {
    "name": "Chest_White",
-   "posOffset": 101871,
-   "posCount": 16776,
-   "idxOffset": 204192,
-   "idxCount": 33528
+   "file": "meshes/Chest_White.drc",
+   "verts": 69859,
+   "faces": 139710
   },
   {
    "name": "Neck_Pitch_Gray",
-   "posOffset": 118647,
-   "posCount": 17097,
-   "idxOffset": 237720,
-   "idxCount": 34158
+   "file": "meshes/Neck_Pitch_Gray.drc",
+   "verts": 71181,
+   "faces": 142350
   },
   {
    "name": "Neck_Yaw_Face",
-   "posOffset": 135744,
-   "posCount": 9594,
-   "idxOffset": 271878,
-   "idxCount": 19224
+   "file": "meshes/Neck_Yaw_Face.drc",
+   "verts": 40048,
+   "faces": 80108
   },
   {
    "name": "Neck_Yaw_Head",
-   "posOffset": 145338,
-   "posCount": 13725,
-   "idxOffset": 291102,
-   "idxCount": 27477
+   "file": "meshes/Neck_Yaw_Head.drc",
+   "verts": 57499,
+   "faces": 114494
   },
   {
    "name": "Neck_Yaw_Cam",
-   "posOffset": 159063,
-   "posCount": 1254,
-   "idxOffset": 318579,
-   "idxCount": 2472
+   "file": "meshes/Neck_Yaw_Cam.drc",
+   "verts": 5460,
+   "faces": 10308
   },
   {
    "name": "Neck_Yaw_Led",
-   "posOffset": 160317,
-   "posCount": 732,
-   "idxOffset": 321051,
-   "idxCount": 1428
+   "file": "meshes/Neck_Yaw_Led.drc",
+   "verts": 244,
+   "faces": 476
   },
   {
    "name": "L_Shoulder_Pitch_Black",
-   "posOffset": 161049,
-   "posCount": 54945,
-   "idxOffset": 322479,
-   "idxCount": 109932
+   "file": "meshes/L_Shoulder_Pitch_Black.drc",
+   "verts": 74387,
+   "faces": 148858
   },
   {
    "name": "L_Shoulder_Pitch_White",
-   "posOffset": 215994,
-   "posCount": 2379,
-   "idxOffset": 432411,
-   "idxCount": 4746
+   "file": "meshes/L_Shoulder_Pitch_White.drc",
+   "verts": 9900,
+   "faces": 19796
   },
   {
    "name": "Shoulder_RollYaw_White",
-   "posOffset": 218373,
-   "posCount": 13572,
-   "idxOffset": 437157,
-   "idxCount": 27108
+   "file": "meshes/Shoulder_RollYaw_White.drc",
+   "verts": 42805,
+   "faces": 85598
   },
   {
    "name": "Upper_Arm_Gray",
-   "posOffset": 231945,
-   "posCount": 32640,
-   "idxOffset": 464265,
-   "idxCount": 65268
+   "file": "meshes/Upper_Arm_Gray.drc",
+   "verts": 81747,
+   "faces": 163490
   },
   {
    "name": "Upper_Arm_White1",
-   "posOffset": 264585,
-   "posCount": 4146,
-   "idxOffset": 529533,
-   "idxCount": 8280
+   "file": "meshes/Upper_Arm_White1.drc",
+   "verts": 3535,
+   "faces": 7066
   },
   {
    "name": "Upper_Arm_White2",
-   "posOffset": 268731,
-   "posCount": 4221,
-   "idxOffset": 537813,
-   "idxCount": 8430
+   "file": "meshes/Upper_Arm_White2.drc",
+   "verts": 3646,
+   "faces": 7288
   },
   {
    "name": "Upper_Arm_White3",
-   "posOffset": 272952,
-   "posCount": 22641,
-   "idxOffset": 546243,
-   "idxCount": 45174
+   "file": "meshes/Upper_Arm_White3.drc",
+   "verts": 41399,
+   "faces": 82731
   },
   {
    "name": "Upper_Arm_White4",
-   "posOffset": 295593,
-   "posCount": 18576,
-   "idxOffset": 591417,
-   "idxCount": 37140
+   "file": "meshes/Upper_Arm_White4.drc",
+   "verts": 36623,
+   "faces": 73207
   },
   {
    "name": "Upper_Arm_White5",
-   "posOffset": 314169,
-   "posCount": 2031,
-   "idxOffset": 628557,
-   "idxCount": 4026
+   "file": "meshes/Upper_Arm_White5.drc",
+   "verts": 3350,
+   "faces": 6692
   },
   {
    "name": "Upper_Arm_White6",
-   "posOffset": 316200,
-   "posCount": 1716,
-   "idxOffset": 632583,
-   "idxCount": 3420
+   "file": "meshes/Upper_Arm_White6.drc",
+   "verts": 7136,
+   "faces": 14268
   },
   {
    "name": "Upper_Arm_White7",
-   "posOffset": 317916,
-   "posCount": 1680,
-   "idxOffset": 636003,
-   "idxCount": 3348
+   "file": "meshes/Upper_Arm_White7.drc",
+   "verts": 6982,
+   "faces": 13960
   },
   {
    "name": "Upper_Arm_White8",
-   "posOffset": 319596,
-   "posCount": 753,
-   "idxOffset": 639351,
-   "idxCount": 1494
+   "file": "meshes/Upper_Arm_White8.drc",
+   "verts": 2848,
+   "faces": 5692
   },
   {
    "name": "Upper_Arm_White9",
-   "posOffset": 320349,
-   "posCount": 753,
-   "idxOffset": 640845,
-   "idxCount": 1494
+   "file": "meshes/Upper_Arm_White9.drc",
+   "verts": 2846,
+   "faces": 5688
   },
   {
    "name": "Elbow_Gray",
-   "posOffset": 321102,
-   "posCount": 22380,
-   "idxOffset": 642339,
-   "idxCount": 44718
+   "file": "meshes/Elbow_Gray.drc",
+   "verts": 51901,
+   "faces": 103773
   },
   {
    "name": "Forearm_Black",
-   "posOffset": 343482,
-   "posCount": 22500,
-   "idxOffset": 687057,
-   "idxCount": 45012
+   "file": "meshes/Forearm_Black.drc",
+   "verts": 73004,
+   "faces": 146012
   },
   {
    "name": "Forearm_Gray",
-   "posOffset": 365982,
-   "posCount": 50238,
-   "idxOffset": 732069,
-   "idxCount": 102084
+   "file": "meshes/Forearm_Gray.drc",
+   "verts": 47765,
+   "faces": 96066
   },
   {
    "name": "Forearm_White",
-   "posOffset": 416220,
-   "posCount": 1950,
-   "idxOffset": 834153,
-   "idxCount": 3870
+   "file": "meshes/Forearm_White.drc",
+   "verts": 8069,
+   "faces": 16138
   },
   {
    "name": "Wrist_Roll_Gray",
-   "posOffset": 418170,
-   "posCount": 744,
-   "idxOffset": 838023,
-   "idxCount": 1500
+   "file": "meshes/Wrist_Roll_Gray.drc",
+   "verts": 2874,
+   "faces": 5760
   },
   {
    "name": "Wrist_Pitch_Gray",
-   "posOffset": 418914,
-   "posCount": 6534,
-   "idxOffset": 839523,
-   "idxCount": 13110
+   "file": "meshes/Wrist_Pitch_Gray.drc",
+   "verts": 7857,
+   "faces": 15730
   },
   {
    "name": "L_Palm_Gray",
-   "posOffset": 425448,
-   "posCount": 74124,
-   "idxOffset": 852633,
-   "idxCount": 153732
+   "file": "meshes/L_Palm_Gray.drc",
+   "verts": 56683,
+   "faces": 115326
   },
   {
    "name": "L_Palm_Pad",
-   "posOffset": 499572,
-   "posCount": 9354,
-   "idxOffset": 1006365,
-   "idxCount": 18696
+   "file": "meshes/L_Palm_Pad.drc",
+   "verts": 22454,
+   "faces": 44904
   },
   {
    "name": "L_Palm_White",
-   "posOffset": 508926,
-   "posCount": 19095,
-   "idxOffset": 1025061,
-   "idxCount": 38109
+   "file": "meshes/L_Palm_White.drc",
+   "verts": 52869,
+   "faces": 105589
   },
   {
    "name": "L_Thumb_Yaw_Gray",
-   "posOffset": 528021,
-   "posCount": 18537,
-   "idxOffset": 1063170,
-   "idxCount": 38526
+   "file": "meshes/L_Thumb_Yaw_Gray.drc",
+   "verts": 19491,
+   "faces": 39686
   },
   {
    "name": "L_Thumb_Proximal_Gray",
-   "posOffset": 546558,
-   "posCount": 22806,
-   "idxOffset": 1101696,
-   "idxCount": 45588
+   "file": "meshes/L_Thumb_Proximal_Gray.drc",
+   "verts": 23316,
+   "faces": 46620
   },
   {
    "name": "L_Thumb_Proximal_Pad",
-   "posOffset": 569364,
-   "posCount": 1404,
-   "idxOffset": 1147284,
-   "idxCount": 2790
+   "file": "meshes/L_Thumb_Proximal_Pad.drc",
+   "verts": 5815,
+   "faces": 11626
   },
   {
    "name": "L_Thumb_Proximal_White",
-   "posOffset": 570768,
-   "posCount": 4239,
-   "idxOffset": 1150074,
-   "idxCount": 8466
+   "file": "meshes/L_Thumb_Proximal_White.drc",
+   "verts": 2246,
+   "faces": 4488
   },
   {
    "name": "L_Thumb_Middle_Gray",
-   "posOffset": 575007,
-   "posCount": 5910,
-   "idxOffset": 1158540,
-   "idxCount": 11808
+   "file": "meshes/L_Thumb_Middle_Gray.drc",
+   "verts": 11078,
+   "faces": 22152
   },
   {
    "name": "L_Thumb_Middle_Pad",
-   "posOffset": 580917,
-   "posCount": 927,
-   "idxOffset": 1170348,
-   "idxCount": 1842
+   "file": "meshes/L_Thumb_Middle_Pad.drc",
+   "verts": 2600,
+   "faces": 5196
   },
   {
    "name": "L_Thumb_Distal_Gray",
-   "posOffset": 581844,
-   "posCount": 9420,
-   "idxOffset": 1172190,
-   "idxCount": 18816
+   "file": "meshes/L_Thumb_Distal_Gray.drc",
+   "verts": 15618,
+   "faces": 31228
   },
   {
    "name": "L_Thumb_Distal_Pad",
-   "posOffset": 591264,
-   "posCount": 2115,
-   "idxOffset": 1191006,
-   "idxCount": 4218
+   "file": "meshes/L_Thumb_Distal_Pad.drc",
+   "verts": 6960,
+   "faces": 13916
   },
   {
    "name": "Finger_Roll_Gray",
-   "posOffset": 593379,
-   "posCount": 10770,
-   "idxOffset": 1195224,
-   "idxCount": 21528
+   "file": "meshes/Finger_Roll_Gray.drc",
+   "verts": 11029,
+   "faces": 22054
   },
   {
    "name": "Finger_Proximal_Gray",
-   "posOffset": 604149,
-   "posCount": 9678,
-   "idxOffset": 1216752,
-   "idxCount": 19380
+   "file": "meshes/Finger_Proximal_Gray.drc",
+   "verts": 7654,
+   "faces": 15352
   },
   {
    "name": "Finger_Proximal_Pad",
-   "posOffset": 613827,
-   "posCount": 1956,
-   "idxOffset": 1236132,
-   "idxCount": 3900
+   "file": "meshes/Finger_Proximal_Pad.drc",
+   "verts": 4882,
+   "faces": 9760
   },
   {
    "name": "Finger_Proximal_White",
-   "posOffset": 615783,
-   "posCount": 5118,
-   "idxOffset": 1240032,
-   "idxCount": 10224
+   "file": "meshes/Finger_Proximal_White.drc",
+   "verts": 3076,
+   "faces": 6148
   },
   {
    "name": "Finger_Middle_Gray",
-   "posOffset": 620901,
-   "posCount": 7755,
-   "idxOffset": 1250256,
-   "idxCount": 15498
+   "file": "meshes/Finger_Middle_Gray.drc",
+   "verts": 12066,
+   "faces": 24128
   },
   {
    "name": "Finger_Middle_Pad",
-   "posOffset": 628656,
-   "posCount": 3135,
-   "idxOffset": 1265754,
-   "idxCount": 6258
+   "file": "meshes/Finger_Middle_Pad.drc",
+   "verts": 7941,
+   "faces": 15878
   },
   {
    "name": "Finger_Distal_Gray",
-   "posOffset": 631791,
-   "posCount": 10302,
-   "idxOffset": 1272012,
-   "idxCount": 20580
+   "file": "meshes/Finger_Distal_Gray.drc",
+   "verts": 15619,
+   "faces": 31230
   },
   {
    "name": "Finger_Distal_Pad",
-   "posOffset": 642093,
-   "posCount": 2034,
-   "idxOffset": 1292592,
-   "idxCount": 4056
+   "file": "meshes/Finger_Distal_Pad.drc",
+   "verts": 6962,
+   "faces": 13920
   },
   {
    "name": "R_Shoulder_Pitch_Black",
-   "posOffset": 644127,
-   "posCount": 48963,
-   "idxOffset": 1296648,
-   "idxCount": 97902
+   "file": "meshes/R_Shoulder_Pitch_Black.drc",
+   "verts": 76467,
+   "faces": 152966
   },
   {
    "name": "R_Shoulder_Pitch_White",
-   "posOffset": 693090,
-   "posCount": 39348,
-   "idxOffset": 1394550,
-   "idxCount": 78684
+   "file": "meshes/R_Shoulder_Pitch_White.drc",
+   "verts": 83309,
+   "faces": 166614
   },
   {
    "name": "R_Palm_Gray",
-   "posOffset": 732438,
-   "posCount": 75513,
-   "idxOffset": 1473234,
-   "idxCount": 156528
+   "file": "meshes/R_Palm_Gray.drc",
+   "verts": 56687,
+   "faces": 115328
   },
   {
    "name": "R_Palm_Pad",
-   "posOffset": 807951,
-   "posCount": 9150,
-   "idxOffset": 1629762,
-   "idxCount": 18288
+   "file": "meshes/R_Palm_Pad.drc",
+   "verts": 22451,
+   "faces": 44898
   },
   {
    "name": "R_Palm_White",
-   "posOffset": 817101,
-   "posCount": 18861,
-   "idxOffset": 1648050,
-   "idxCount": 37647
+   "file": "meshes/R_Palm_White.drc",
+   "verts": 52873,
+   "faces": 105602
   },
   {
    "name": "R_Thumb_Yaw_Gray",
-   "posOffset": 835962,
-   "posCount": 18840,
-   "idxOffset": 1685697,
-   "idxCount": 39318
+   "file": "meshes/R_Thumb_Yaw_Gray.drc",
+   "verts": 19491,
+   "faces": 39682
   },
   {
    "name": "R_Thumb_Proximal_Gray",
-   "posOffset": 854802,
-   "posCount": 22467,
-   "idxOffset": 1725015,
-   "idxCount": 44910
+   "file": "meshes/R_Thumb_Proximal_Gray.drc",
+   "verts": 23320,
+   "faces": 46628
   },
   {
    "name": "R_Thumb_Proximal_Pad",
-   "posOffset": 877269,
-   "posCount": 1401,
-   "idxOffset": 1769925,
-   "idxCount": 2784
+   "file": "meshes/R_Thumb_Proximal_Pad.drc",
+   "verts": 5814,
+   "faces": 11624
   },
   {
    "name": "R_Thumb_Proximal_White",
-   "posOffset": 878670,
-   "posCount": 4443,
-   "idxOffset": 1772709,
-   "idxCount": 8874
+   "file": "meshes/R_Thumb_Proximal_White.drc",
+   "verts": 2246,
+   "faces": 4488
   },
   {
    "name": "R_Thumb_Middle_Gray",
-   "posOffset": 883113,
-   "posCount": 4917,
-   "idxOffset": 1781583,
-   "idxCount": 9822
+   "file": "meshes/R_Thumb_Middle_Gray.drc",
+   "verts": 11078,
+   "faces": 22152
   },
   {
    "name": "R_Thumb_Middle_Pad",
-   "posOffset": 888030,
-   "posCount": 987,
-   "idxOffset": 1791405,
-   "idxCount": 1962
+   "file": "meshes/R_Thumb_Middle_Pad.drc",
+   "verts": 2599,
+   "faces": 5194
   },
   {
    "name": "R_Thumb_Distal_Gray",
-   "posOffset": 889017,
-   "posCount": 1884,
-   "idxOffset": 1793367,
-   "idxCount": 3768
+   "file": "meshes/R_Thumb_Distal_Gray.drc",
+   "verts": 3162,
+   "faces": 6324
   },
   {
    "name": "R_Thumb_Distal_Pad",
-   "posOffset": 890901,
-   "posCount": 2199,
-   "idxOffset": 1797135,
-   "idxCount": 4386
+   "file": "meshes/R_Thumb_Distal_Pad.drc",
+   "verts": 6962,
+   "faces": 13920
   }
  ],
  "geoms": [
