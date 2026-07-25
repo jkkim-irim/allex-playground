@@ -58,6 +58,12 @@
     <default class="static">
       <geom type="box" contype="7" conaffinity="7" friction="0.8 0.02 0.001"/>
     </default>
+    <!-- Shared tuning for every frozen joint. solref timeconst must stay
+         >= 2*timestep (0.002) or the constraint rings; 0.004 is the tightest
+         stable value measured here. -->
+    <default class="frozen">
+      <equality solref="0.004 1" solimp="0.99 0.9999 0.001"/>
+    </default>
   </default>
 
   <worldbody>
@@ -204,10 +210,69 @@
        (actuatorfrcrange="-6 6"), so its servo loses the same argument. "Fixed
        neck" has to mean both axes. -->
   <equality>
-    <joint joint1="Neck_Pitch_Joint" polycoef="0.5235988 0 0 0 0"
-           solref="0.004 1" solimp="0.99 0.9999 0.001"/>
-    <joint joint1="Neck_Yaw_Joint" polycoef="0 0 0 0 0"
-           solref="0.004 1" solimp="0.99 0.9999 0.001"/>
+    <joint class="frozen" joint1="Neck_Pitch_Joint" polycoef="0.5235988 0 0 0 0"/>
+    <joint class="frozen" joint1="Neck_Yaw_Joint" polycoef="0 0 0 0 0"/>
+
+    <!-- Only the right arm and right hand are driven; everything else is frozen.
+         qpos0 is 0 for all of these, so polycoef[0]=0 holds each at its
+         initial angle.
+
+         A dependent joint may NOT simply be frozen at 0. ALLEX ships 12 coupling
+         constraints whose polynomials have nonzero constant terms:
+
+           L_Index_DIP  = -0.003849 + 0.4269*PIP + ...
+           L_Thumb_IP   = -0.0015   + 0.6651*MCP + ...
+           Waist_Lower_Pitch = -Waist_Upper_Pitch,  = +Waist_Pitch_Dummy
+
+         Freezing L_Index_DIP at 0 would contradict its own coupling, which wants
+         -0.22 deg while its driver sits at 0.
+
+         Freezing ONLY the drivers was tried first and is not enough. The couplings
+         carry ALLEX's own solimp/solref, which are soft, so a pinned driver does
+         not hold its dependent still -- measured drift over 15 s of hard right-arm
+         motion was L_Thumb_IP 9.1 deg, Waist_Upper_Pitch 5.4 deg, L_Index_DIP
+         4.4 deg, against 0.34 deg for a joint frozen directly. Visibly not fixed.
+
+         So the dependents are frozen too, each at the value its coupling implies
+         with the driver at 0 -- that is polycoef[0] of the coupling, since
+         y = y0 + a0 and y0 = qpos0 = 0. Weld and coupling then agree numerically
+         instead of fighting, and the redundancy is consistent rather than
+         over-constrained. -->
+    <joint class="frozen" joint1="Waist_Yaw_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="Waist_Lower_Pitch_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="Waist_Upper_Pitch_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="Waist_Pitch_Dummy_Joint" polycoef="0 0 0 0 0"/>
+
+    <joint class="frozen" joint1="L_Shoulder_Pitch_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Shoulder_Roll_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Shoulder_Yaw_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Elbow_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Wrist_Yaw_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Wrist_Roll_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Wrist_Pitch_Joint" polycoef="0 0 0 0 0"/>
+
+    <joint class="frozen" joint1="L_Thumb_Yaw_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Thumb_CMC_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Thumb_MCP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Index_ABAD_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Index_MCP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Index_PIP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Middle_ABAD_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Middle_MCP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Middle_PIP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Ring_ABAD_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Ring_MCP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Ring_PIP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Little_ABAD_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Little_MCP_Joint" polycoef="0 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Little_PIP_Joint" polycoef="0 0 0 0 0"/>
+
+    <!-- Coupled dependents, each held at its coupling's polycoef[0]. -->
+    <joint class="frozen" joint1="L_Thumb_IP_Joint" polycoef="-0.0015 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Index_DIP_Joint" polycoef="-0.003849 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Middle_DIP_Joint" polycoef="-0.003849 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Ring_DIP_Joint" polycoef="-0.003849 0 0 0 0"/>
+    <joint class="frozen" joint1="L_Little_DIP_Joint" polycoef="-0.003849 0 0 0 0"/>
   </equality>
 
   <contact>
