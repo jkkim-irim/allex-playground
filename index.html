@@ -290,6 +290,76 @@
     }
     @media (pointer: coarse) { #namerow input, #namerow button { min-height: 44px; } }
 
+    /* ===== live leaderboard, bottom left =====
+       Bottom left is the one free corner: the key guide is top left, the scoreboard top
+       centre, the pad bottom right. pointer-events: none so it never swallows a drag
+       meant for the canvas -- XY is steered by dragging anywhere on the scene. */
+    #lbhud {
+      position: fixed; z-index: 13;
+      left: calc(12px + env(safe-area-inset-left));
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      min-width: 172px; max-width: 46vw;
+      background: rgba(12, 14, 18, .62); border: 1px solid #262c34;
+      border-radius: 8px; padding: 8px 10px;
+      backdrop-filter: blur(5px); pointer-events: none;
+    }
+    #lbhud[hidden] { display: none; }
+    #lbhudhead {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+      color: #9fb4d0; font-size: 11px; letter-spacing: .05em; margin-bottom: 5px;
+    }
+    #lbhudlive { color: #6f7b89; font-size: 10px; }
+    #lbhudtable { border-collapse: collapse; width: 100%; }
+    #lbhudtable td { font-size: 12px; color: #c3ccd8; padding: 1px 0; line-height: 1.5; }
+    #lbhudtable td.rank { color: #6f7b89; padding-right: 7px; }
+    #lbhudtable td.who {
+      max-width: 8.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #lbhudtable td.pts {
+      text-align: right; padding-left: 8px; color: #9fb4d0;
+      font-variant-numeric: tabular-nums;
+    }
+    /* Your own row, so you can find yourself without reading every name. */
+    #lbhudtable tr.me td { color: #eaf0f7; }
+    #lbhudtable tr.me td.pts { color: #6ddf8f; }
+    #lbhudnote { color: #6f7b89; font-size: 10px; margin-top: 4px; line-height: 1.5; }
+    @media (max-width: 480px) {
+      #lbhud { min-width: 148px; padding: 6px 8px; }
+      #lbhudtable td { font-size: 11px; }
+    }
+
+    /* ===== name gate =====
+       z-index above the Esc menu (30) on purpose: the name is required, so the menu
+       must not be a way around it. */
+    #namegate {
+      position: fixed; inset: 0; z-index: 40; display: flex;
+      align-items: center; justify-content: center; padding: 16px;
+      background: rgba(8, 10, 13, .82); backdrop-filter: blur(4px);
+    }
+    #namegate[hidden] { display: none; }
+    #namebox {
+      width: 100%; max-width: 340px; text-align: center;
+      background: #12161b; border: 1px solid #262c34; border-radius: 12px;
+      padding: 22px 20px;
+    }
+    #namebox h2 { margin: 0 0 6px; font-size: 16px; color: #e6e8eb; font-weight: 600; }
+    #namebox p { margin: 0 0 16px; font-size: 12px; color: #8b95a3; line-height: 1.6; }
+    #gateName {
+      width: 100%; box-sizing: border-box; text-align: center;
+      padding: 11px 12px; margin-bottom: 10px;
+      background: #1b2027; color: #e6e8eb; border: 1px solid #333c48;
+      border-radius: 8px; font: inherit; font-size: 15px; letter-spacing: .02em;
+    }
+    #gateName:focus { outline: none; border-color: #3a5f86; }
+    #gateStart {
+      width: 100%; padding: 11px 12px; cursor: pointer;
+      background: #24405e; color: #dce8f5; border: 1px solid #3a5f86;
+      border-radius: 8px; font: inherit; font-size: 13px;
+    }
+    #gateStart:hover { background: #2a4b6d; }
+    #gateErr { min-height: 16px; margin-top: 8px; color: #ff7a6b; font-size: 11.5px; }
+    @media (pointer: coarse) { #gateName, #gateStart { min-height: 48px; } }
+
     /* loading line, centre screen until the scene is up */
     #boot {
       position: fixed; inset: 0; z-index: 20; display: flex;
@@ -298,7 +368,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-DRC-9dz6.js"></script>
+  <script type="module" crossorigin src="./assets/index-ZBAiF3G9.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -315,6 +385,28 @@
   <div id="banner"></div>
 
   <div id="keyguide"><table id="keys"></table></div>
+
+  <!-- Live leaderboard. Kept up to date by the store's own sync, so it reflects other
+       players without reloading the page. -->
+  <div id="lbhud" hidden>
+    <div id="lbhudhead"><span>리더보드</span><span id="lbhudlive"></span></div>
+    <table id="lbhudtable"></table>
+    <div id="lbhudnote"></div>
+  </div>
+
+  <!-- Name gate. The episode's whole purpose is a leaderboard entry, so a run with no
+       name has nowhere to go -- the game does not start until this is answered. -->
+  <div id="namegate" hidden>
+    <div id="namebox">
+      <h2>이름을 입력하세요</h2>
+      <p>리더보드에 표시할 이름입니다.<br />최대 8글자.</p>
+      <input id="gateName" type="text" maxlength="8" placeholder="이름"
+             autocomplete="off" autocapitalize="off" spellcheck="false"
+             enterkeyhint="go" />
+      <button id="gateStart" type="button">게임 시작</button>
+      <div id="gateErr"></div>
+    </div>
+  </div>
 
   <button id="menubtn" type="button" aria-label="메뉴 열기">☰</button>
 
@@ -406,7 +498,7 @@
 
       <div id="pane-board" class="pane" hidden>
         <div id="namerow">
-          <input id="playerName" type="text" maxlength="24" placeholder="플레이어 이름" />
+          <input id="playerName" type="text" maxlength="8" placeholder="플레이어 이름" />
           <button id="saveName" type="button">이름 사용</button>
         </div>
         <table id="lbtable"></table>
