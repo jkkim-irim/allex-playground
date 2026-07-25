@@ -133,6 +133,40 @@
             mode="targetbody" target="bench"/>
   </worldbody>
 
+  <!-- The head is a sensor mount in this game, not something the player drives, so
+       its pitch is welded rather than servoed.
+
+       It cannot be left to the actuator. Neck_Pitch_Joint carries
+       actuatorfrcrange="-12 12" -- weak by design on the real robot -- and the arm
+       overpowers it: driving a hand to its default target brings L_Upper_Arm_Link
+       against Neck_Yaw_Link and the head was batted from -44.8 to +50.6 deg,
+       through BOTH joint limits (MuJoCo limits are soft), while ctrl sat correctly
+       at 30 deg and the servo saturated. The first-person camera rides on this
+       joint, so the view swung with it.
+
+       A joint equality with joint2 omitted holds joint1 at qpos0 + polycoef[0];
+       qpos0 is 0 here, so this is a hard 30 deg = 0.5235988 rad. Doing it in the
+       model rather than by overwriting qpos each frame keeps nq/nv/nu identical to
+       the real robot -- which matters, because recorded joint trajectories are the
+       point of this project -- and lets the constraint solver put the reaction
+       into the arm instead of silently violating momentum.
+
+       solref timeconst must stay >= 2*timestep (0.002) or the constraint rings;
+       0.004 is the tightest stable value here.
+
+       Yaw is welded too, at 0. Welding pitch alone is not enough: with the head
+       no longer free to pitch away, the same arm contact twisted it 74.7 deg in
+       yaw and left it sitting at -59 deg -- a first-person camera aimed most of
+       the way over one shoulder. Neck_Yaw_Joint is weaker still
+       (actuatorfrcrange="-6 6"), so its servo loses the same argument. "Fixed
+       neck" has to mean both axes. -->
+  <equality>
+    <joint joint1="Neck_Pitch_Joint" polycoef="0.5235988 0 0 0 0"
+           solref="0.004 1" solimp="0.99 0.9999 0.001"/>
+    <joint joint1="Neck_Yaw_Joint" polycoef="0 0 0 0 0"
+           solref="0.004 1" solimp="0.99 0.9999 0.001"/>
+  </equality>
+
   <contact>
     <!-- The robot is bolted to the mount; contact between them is meaningless in
          either direction. Stating it here rather than relying on geometry: the
