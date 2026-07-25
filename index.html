@@ -182,9 +182,12 @@
        as held after the finger slides off it. */
     .padbtn.on { background: #2a4b6d; border-color: #46566a; color: #eaf0f7; }
     #gripbtn { width: auto; min-width: 91px; height: 42px; font-size: 12px; letter-spacing: .06em; }
+    .padtaps { gap: 5px; }
+    .padtaps .padbtn { width: 47px; font-size: 11px; }
     @media (pointer: coarse) {
       .padbtn { width: 52px; height: 46px; font-size: 16px; }
       #gripbtn { min-width: 115px; height: 54px; }
+      .padtaps .padbtn { width: 60px; font-size: 12px; }
       .padlbl { font-size: 12px; }
     }
 
@@ -248,7 +251,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-BQKReF84.js"></script>
+  <script type="module" crossorigin src="./assets/index-BrI4rEz_.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -285,6 +288,12 @@
       <button class="padbtn" data-hold="yawPos" aria-label="yaw +">+</button>
     </div>
     <button id="gripbtn" class="padbtn" data-hold="grip" aria-label="쥐기">GRIP</button>
+    <!-- data-tap, not data-hold: these fire once per press however long it is held. -->
+    <div class="padgrp padtaps">
+      <button class="padbtn" data-tap="view" aria-label="시점 변경">시점</button>
+      <button class="padbtn" data-tap="home" aria-label="타깃 복귀">복귀</button>
+      <button class="padbtn" data-tap="reset" aria-label="전체 리셋">리셋</button>
+    </div>
   </div>
   <div id="touchnote">
     한 손가락으로 끌면 손바닥이 따라옵니다 · 두 손가락은 카메라<br />
