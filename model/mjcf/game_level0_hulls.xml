@@ -20,7 +20,7 @@
           fails both (1&4)==0 and (2&1)==0, so it would silently pass through
           that link. 7/7 collides with everything. -->
 
-  <include file="ALLEX_physics.xml"/>
+  <include file="ALLEX_hulls.xml"/>
 
   <statistic center="0.15 0 0.35" extent="1.5"/>
 
