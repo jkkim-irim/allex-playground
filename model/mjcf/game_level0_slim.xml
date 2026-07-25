@@ -39,6 +39,18 @@
        cost 22.4 mm of penetration against 5.8 mm here. -->
   <option gravity="0 0 -9.81" timestep="0.0041667"/>
 
+  <!-- Solver arena, sized with deliberate margin so nothing can ever be dropped for want
+       of space. Note njmax and nconmax are NOT the knobs any more: MuJoCo 3 removed both
+       (they read back as -1 on this build, 3.10.0) and replaced them with this single
+       dynamically-partitioned arena, which is why they are not written here -- the
+       compiler rejects them outright.
+       Measured peak over a deliberately worst-case run -- grasp the cylinder, jam it into
+       the bin, then drive the arm into the torso and up under the head -- was ncon 34,
+       nefc 253, 0.2 MB of arena. Auto-sizing already gave 19 MB, so 32 MB is roughly 160x
+       the observed high-water mark. mjWARN_CONTACTFULL and mjWARN_CNSTRFULL have never
+       fired. This is headroom for the unmeasured case, not a fix for a seen failure. -->
+  <size memory="32M"/>
+
   <statistic center="0.15 0 0.95" extent="1.5"/>
 
   <visual>
@@ -231,6 +243,22 @@
        the way over one shoulder. Neck_Yaw_Joint is weaker still
        (actuatorfrcrange="-6 6"), so its servo loses the same argument. "Fixed
        neck" has to mean both axes. -->
+  <!-- The 0-90 deg limit on the coupled distal joints (R_*_DIP, R_Thumb_IP) is NOT here.
+       It is applied in code -- see clampDistals() in web/src/main.js.
+       Those five joints ship with nothing in ALLEX.xml: no range, no actuator, no
+       armature, no frictionloss, no damping. The only thing holding them is the coupling
+       equality, which is a SOFT constraint, so a contact on a fingertip has nothing hard
+       to push against. Measured: closing the hand in air levers R_Thumb_IP to -84 deg and
+       it stays there, 136.8 deg away from what its own coupling demands.
+       A fixed tendon with range="0 1.5707963" was tried here first and does not work.
+       The tendon compiles (ntendon 5, correct range) but produces zero constraint force,
+       and stacking a soft limit on a DOF that an equality already determines exactly makes
+       the solver blend the two: adding it drove R_Middle_DIP from +50.9 to -14.7 deg, i.e.
+       further outside the limit it was supposed to enforce. MJCF has no other lever --
+       ALLEX.xml is generated and must not be hand-edited, an including file cannot override
+       an included joint, and these WASM bindings throw on mjModel.jnt_limited
+       (memory_view<bool> is not a registered type). Hence the code-side clamp. -->
+
   <equality>
     <joint class="frozen" joint1="Neck_Pitch_Joint" polycoef="0.5235988 0 0 0 0"/>
     <joint class="frozen" joint1="Neck_Yaw_Joint" polycoef="0 0 0 0 0"/>
