@@ -356,13 +356,21 @@
     @media (prefers-reduced-motion: reduce) { #roticon { animation: none; } }
     #rotbox h2 { margin: 0 0 8px; font-size: 17px; color: #e6e8eb; font-weight: 600; }
     #rotbox p { margin: 0 0 18px; font-size: 12.5px; color: #8b95a3; line-height: 1.7; }
-    #gofull, #rotinstall {
+    #gofull, #rotinstall, #openext {
       display: block; width: 100%; min-height: 48px; margin-bottom: 9px;
       cursor: pointer; background: #24405e; color: #dce8f5;
       border: 1px solid #3a5f86; border-radius: 8px; font: inherit; font-size: 13px;
     }
-    #rotinstall { background: #1b2027; color: #c3ccd8; border-color: #333c48; }
-    #rotinstall[hidden] { display: none; }
+    /* When an in-app browser is the problem, leaving it is the primary action and the
+       other two are consolation prizes -- so this one keeps the accent and they lose it. */
+    #openext { background: #2f6b3f; border-color: #48915b; }
+    #rotinstall, #openext ~ #gofull {
+      background: #1b2027; color: #c3ccd8; border-color: #333c48;
+    }
+    #rotinstall[hidden], #openext[hidden] { display: none; }
+    #openext[hidden] ~ #gofull {
+      background: #24405e; color: #dce8f5; border-color: #3a5f86;
+    }
     #rotnote { min-height: 15px; margin-top: 6px; color: #6f7b89; font-size: 11px; }
 
     /* ===== name gate =====
@@ -405,7 +413,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-y1264oQQ.js"></script>
+  <script type="module" crossorigin src="./assets/index-Cwr-KY7_.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -438,6 +446,7 @@
       <div id="roticon">⟳</div>
       <h2 id="rottitle">전체화면으로 시작</h2>
       <p id="rotbody">전체화면으로 가로 고정한 뒤 시작합니다.</p>
+      <button id="openext" type="button" hidden>Chrome에서 열기</button>
       <button id="gofull" type="button">전체화면으로 시작</button>
       <button id="rotinstall" type="button" hidden>앱으로 설치</button>
       <div id="rotnote"></div>
