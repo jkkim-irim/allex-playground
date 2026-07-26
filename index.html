@@ -374,6 +374,22 @@
     }
     #rotnote { min-height: 15px; margin-top: 6px; color: #6f7b89; font-size: 11px; }
 
+    /* ===== haptics toggle ===== */
+    /* Hidden entirely where navigator.vibrate does not exist -- iOS, and every desktop
+       browser -- rather than shown as a switch that does nothing. */
+    #hapticrow { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    #hapticrow[hidden] { display: none; }
+    #hapticrow > span { color: #8b95a3; font-size: 12px; flex: none; }
+    #haptictoggle {
+      flex: 1; padding: 8px 10px; cursor: pointer;
+      background: #1b2027; color: #c3ccd8;
+      border: 1px solid #333c48; border-radius: 6px; font: inherit; font-size: 12px;
+    }
+    #haptictoggle[aria-pressed="true"] {
+      background: #2a3644; color: #eaf0f7; border-color: #46566a;
+    }
+    @media (pointer: coarse) { #haptictoggle { min-height: 44px; } }
+
     /* ===== level selector ===== */
     #levelrow { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     #levellbl { color: #8b95a3; font-size: 12px; flex: none; }
@@ -487,7 +503,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-D1ZB6NCF.js"></script>
+  <script type="module" crossorigin src="./assets/index-Dyy-_tHP.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -609,6 +625,11 @@
              DIV#menu at the button's own coordinates. -->
         <button id="close" type="button" aria-label="메뉴 닫기">✕</button>
       </div>
+      <div id="hapticrow" hidden>
+        <span>진동</span>
+        <button id="haptictoggle" type="button" aria-pressed="true">켜짐</button>
+      </div>
+
       <div id="levelrow">
         <span id="levellbl">작업</span>
         <div id="levelbtns"></div>
