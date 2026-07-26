@@ -487,7 +487,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-g8xCw-td.js"></script>
+  <script type="module" crossorigin src="./assets/index-D1ZB6NCF.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -527,11 +527,12 @@
     </div>
   </div>
 
-  <!-- Level 1 unlocked. Sits above the briefing so the two cannot stack. -->
+  <!-- The locked level opened. Its name is filled in from LEVELS so renumbering cannot
+       leave a stale one hardcoded here. Sits above the briefing so the two cannot stack. -->
   <div id="unlock" hidden>
     <div id="unlockbox">
       <div id="unlockicon">🔓</div>
-      <h2>LEVEL 1 잠금 해제</h2>
+      <h2 id="unlocktitle">잠금 해제</h2>
       <p id="unlockbody"></p>
       <button id="unlockok" type="button">확인</button>
     </div>
