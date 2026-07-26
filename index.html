@@ -332,6 +332,35 @@
       #lbhudtable td { font-size: 11px; }
     }
 
+    /* ===== portrait gate =====
+       z above the name gate (40): rotate first, then name. */
+    #rotate {
+      position: fixed; inset: 0; z-index: 50; display: flex;
+      align-items: center; justify-content: center; padding: 20px;
+      background: #14171c;
+    }
+    #rotate[hidden] { display: none; }
+    #rotbox { width: 100%; max-width: 320px; text-align: center; }
+    #roticon {
+      font-size: 40px; color: #9fb4d0; margin-bottom: 10px;
+      animation: tip 1.8s ease-in-out infinite;
+    }
+    /* Motion is the message here -- it says "turn this" faster than the text does.
+       Respect a reduced-motion preference rather than overriding it. */
+    @keyframes tip { 0%, 60%, 100% { transform: rotate(0deg); }
+                     30% { transform: rotate(90deg); } }
+    @media (prefers-reduced-motion: reduce) { #roticon { animation: none; } }
+    #rotbox h2 { margin: 0 0 8px; font-size: 17px; color: #e6e8eb; font-weight: 600; }
+    #rotbox p { margin: 0 0 18px; font-size: 12.5px; color: #8b95a3; line-height: 1.7; }
+    #gofull, #rotinstall {
+      display: block; width: 100%; min-height: 48px; margin-bottom: 9px;
+      cursor: pointer; background: #24405e; color: #dce8f5;
+      border: 1px solid #3a5f86; border-radius: 8px; font: inherit; font-size: 13px;
+    }
+    #rotinstall { background: #1b2027; color: #c3ccd8; border-color: #333c48; }
+    #rotinstall[hidden] { display: none; }
+    #rotnote { min-height: 15px; margin-top: 6px; color: #6f7b89; font-size: 11px; }
+
     /* ===== name gate =====
        z-index above the Esc menu (30) on purpose: the name is required, so the menu
        must not be a way around it. */
@@ -372,7 +401,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-B3h4Cn2H.js"></script>
+  <script type="module" crossorigin src="./assets/index-DYCibDoK.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -396,6 +425,20 @@
     <div id="lbhudhead"><span>리더보드</span><span id="lbhudlive"></span></div>
     <table id="lbhudtable"></table>
     <div id="lbhudnote"></div>
+  </div>
+
+  <!-- Portrait gate, touch devices only. Above the name gate: rotating first means the
+       name dialog is not laid out in a shape the game never uses. -->
+  <div id="rotate" hidden>
+    <div id="rotbox">
+      <div id="roticon">⟳</div>
+      <h2>가로로 돌려주세요</h2>
+      <p>이 게임은 가로 화면에 맞춰져 있습니다.<br />
+         아래 버튼을 누르면 전체화면으로 바로 가로 고정됩니다.</p>
+      <button id="gofull" type="button">전체화면으로 시작</button>
+      <button id="rotinstall" type="button" hidden>앱으로 설치</button>
+      <div id="rotnote"></div>
+    </div>
   </div>
 
   <!-- Name gate. The episode's whole purpose is a leaderboard entry, so a run with no
