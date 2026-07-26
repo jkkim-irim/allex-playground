@@ -380,13 +380,11 @@
     #hapticrow { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     #hapticrow[hidden] { display: none; }
     #hapticrow > span { color: #8b95a3; font-size: 12px; flex: none; }
-    #haptictest { flex: none; padding: 8px 12px; }
-    #haptictoggle, #haptictest {
+    #haptictoggle {
       flex: 1; padding: 8px 10px; cursor: pointer;
       background: #1b2027; color: #c3ccd8;
       border: 1px solid #333c48; border-radius: 6px; font: inherit; font-size: 12px;
     }
-    #haptictest { flex: 0 0 auto; }
     #haptictoggle[aria-pressed="true"] {
       background: #2a3644; color: #eaf0f7; border-color: #46566a;
     }
@@ -505,7 +503,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-DrNW9hBD.js"></script>
+  <script type="module" crossorigin src="./assets/index-CBQZd9Wa.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -630,7 +628,6 @@
       <div id="hapticrow" hidden>
         <span>진동</span>
         <button id="haptictoggle" type="button" aria-pressed="true">켜짐</button>
-        <button id="haptictest" type="button">테스트</button>
       </div>
 
       <div id="levelrow">
