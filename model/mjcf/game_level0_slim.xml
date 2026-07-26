@@ -187,23 +187,27 @@
     <!-- Level 0's T block. Two boxes in one body, so MuJoCo excludes the pair where
          they meet automatically.
 
-         80 x 80 mm footprint, 25 mm tall. Laid out so the pieces actually touch:
-         the bar spans y 0.015..0.040 and the stem y -0.040..0.015, meeting at 0.015.
-         An earlier arrangement centred the stem at -0.0275 and left a 15 mm gap
-         between the two halves -- a T in two disconnected pieces.
+         120 x 120 mm footprint, 37.5 mm tall -- 1.5x the original 80 mm. Laid out so
+         the pieces actually touch: the bar spans y 0.0225..0.060 and the stem
+         y -0.060..0.0225, meeting at 0.0225. An earlier arrangement left a gap between
+         the two halves -- a T in two disconnected pieces.
+
+         At 120 mm the bar is wider than the hand's grasp span (80 mm thumb-to-index at
+         synergy 0.45), so it is pushed or taken by the 37.5 mm stem rather than picked
+         up across the top. That is the task, not a limitation.
 
          Origin is the body centre, so pos z = bench top + half the height. Both
          levels' props live in the scene at once and the inactive set is parked below
          the floor with its collisions switched off in code; a second MJCF would mean
          a second compile and a second 4 MB of meshes on every level change. -->
-    <body name="prop_tblock" pos="0.53 -0.17 0.8625">
+    <body name="prop_tblock" pos="0.53 -0.17 0.86875">
       <freejoint name="prop_tblock_free"/>
       <geom class="prop" name="prop_tblock_bar" type="box"
-            size="0.040 0.0125 0.0125" pos="0 0.0275 0"
-            mass="0.040" material="prop_blue"/>
+            size="0.060 0.01875 0.01875" pos="0 0.04125 0"
+            mass="0.100" material="prop_blue"/>
       <geom class="prop" name="prop_tblock_stem" type="box"
-            size="0.0125 0.0275 0.0125" pos="0 -0.0125 0"
-            mass="0.030" material="prop_blue"/>
+            size="0.01875 0.04125 0.01875" pos="0 -0.01875 0"
+            mass="0.075" material="prop_blue"/>
     </body>
 
     <body name="prop_bin" pos="0.46 -0.01 0.8505">
