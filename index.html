@@ -279,6 +279,7 @@
     #lbtable td { padding: 3px 6px 3px 0; font-variant-numeric: tabular-nums; }
     #lbtable td.num { text-align: right; }
     #lbnote { margin-top: 12px; color: #f0c268; font-size: 11.5px; line-height: 1.6; }
+    #boardlevel { color: #9fb4d0; font-size: 11px; letter-spacing: .05em; margin-bottom: 8px; }
     #namerow { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
     #namerow input {
       flex: 1; padding: 8px 10px; background: #1b2027; color: #e6e8eb;
@@ -486,7 +487,7 @@
     }
     #boot[hidden] { display: none; }
   </style>
-  <script type="module" crossorigin src="./assets/index-Be6PJ-2-.js"></script>
+  <script type="module" crossorigin src="./assets/index-CnwO40TT.js"></script>
 </head>
 <body>
   <canvas id="view"></canvas>
@@ -658,7 +659,8 @@
           <input id="playerName" type="text" maxlength="8" placeholder="플레이어 이름" />
           <button id="saveName" type="button">이름 사용</button>
         </div>
-        <table id="lbtable"></table>
+        <div id="boardlevel"></div>
+      <table id="lbtable"></table>
         <div id="lbnote"></div>
       </div>
 
